@@ -1,17 +1,16 @@
 package ca.nangasoft.tweetscribe.acceptance;
 
 import ca.nangasoft.tweetscribe.Main;
+import ca.nangasoft.tweetscribe.testhelpers.TestWorkspace;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -21,26 +20,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.linesOf;
 
 public class CucumberSteps {
-    private Path testWorkspace;
+    private final TestWorkspace workspace = new TestWorkspace();
     private Process program;
 
     @Before
     public void createTestWorkspace() {
-        try {
-            testWorkspace = Files.createTempDirectory("");
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to create test workspace", e);
-        }
+        workspace.create();
     }
 
     @After
     public void deleteTestWorkspace() {
-        try {
-            FileUtils.deleteDirectory(testWorkspace.toFile());
-        } catch (IOException e) {
-            System.err.println("Failed to delete test workspace");
-            e.printStackTrace();
-        }
+        workspace.delete();
     }
 
     @After
@@ -82,7 +72,7 @@ public class CucumberSteps {
     public void fileContainsSomeTweets(String fileName) {
         String tweetRegex = "^@\\w+: .+$";
 
-        assertThat(linesOf(getFile(fileName))).anyMatch(line -> line.matches(tweetRegex));
+        assertThat(linesOf(file(fileName))).anyMatch(line -> line.matches(tweetRegex));
     }
 
     private Process startTweetScribe() throws IOException {
@@ -98,13 +88,13 @@ public class CucumberSteps {
         command.add(Main.class.getName());
 
         return new ProcessBuilder(command)
-                .directory(testWorkspace.toFile())
+                .directory(workspace.getRootFolder())
                 .redirectError(ProcessBuilder.Redirect.INHERIT)
                 .redirectOutput(ProcessBuilder.Redirect.INHERIT)
                 .start();
     }
 
-    private File getFile(String fileName) {
-        return testWorkspace.resolve(fileName).toFile();
+    private File file(String fileName) {
+        return workspace.getFile(fileName);
     }
 }
