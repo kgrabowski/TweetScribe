@@ -2,34 +2,50 @@ package ca.nangasoft.tweetscribe;
 
 import twitter4j.*;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
+        String topicName = promptForTopic();
+        System.out.println("Starting Twitter stream for topic " + topicName);
         TwitterStreamFactory streamFactory = new TwitterStreamFactory();
-        subscribeToTopic("music", streamFactory);
+        TwitterStream stream = streamFactory.getInstance();
+        FileOutputStream outputStream = createFile(topicName + ".txt");
+        stream.addListener(new TopicListener(outputStream));
+        stream.filter(new FilterQuery().language("en").track(topicName));
     }
 
-    private static void subscribeToTopic(String topic, TwitterStreamFactory streamFactory) {
-        TwitterStream stream = streamFactory.getInstance();
-        stream.addListener(new TopicListener(topic));
-        stream.filter(new FilterQuery().language("en").track(topic));
+    private static FileOutputStream createFile(String fileName) {
+        try {
+            return new FileOutputStream(fileName);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Failed to create file " + fileName, e);
+        }
+    }
+
+    private static String promptForTopic() {
+        System.out.println("Enter a topic name: ");
+
+        try (Scanner scanner = new Scanner(System.in)) {
+            return scanner.next();
+        }
     }
 
     private static class TopicListener extends StatusAdapter {
-        private final String topic;
+        private final PrintWriter writer;
 
-        private TopicListener(String topic) {
-            this.topic = topic;
+        private TopicListener(OutputStream stream) {
+            this.writer = new PrintWriter(stream);
         }
 
         @Override
         public void onStatus(Status status) {
-            System.out.printf("[%s] [%s] %s: %s%n%n", topic, status.getLang(), status.getUser().getName(), status.getText());
-        }
-
-        @Override
-        public void onException(Exception ex) {
-            System.err.println("Error: " + ex.getMessage());
-            ex.printStackTrace();
+            writer.printf("%s: %s%n", status.getUser().getName(), status.getText());
+            writer.flush();
         }
     }
 }
