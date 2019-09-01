@@ -8,6 +8,8 @@ import twitter4j.StatusAdapter;
 import twitter4j.TwitterStreamFactory;
 
 public class Twitter4jFacade implements TwitterFacade {
+    public static final int SUBSCRIBE_DELAY = 5000;
+
     private final TwitterStreamFactory streamFactory = new TwitterStreamFactory();
 
     @Override
@@ -16,6 +18,16 @@ public class Twitter4jFacade implements TwitterFacade {
         streamFactory.getInstance()
                 .addListener(new TweetConsumerAdapter(consumer))
                 .filter(new FilterQuery().language("en").track(topicName));
+        throttleSubscriptions();
+    }
+
+    private void throttleSubscriptions() {
+        // Need to wait a bit to avoid getting throttled by the Twitter API
+        try {
+            Thread.sleep(SUBSCRIBE_DELAY);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     private static class TweetConsumerAdapter extends StatusAdapter {

@@ -1,6 +1,7 @@
 package ca.nangasoft.tweetscribe.acceptance;
 
 import ca.nangasoft.tweetscribe.Main;
+import ca.nangasoft.tweetscribe.adapters.Twitter4jFacade;
 import ca.nangasoft.tweetscribe.testhelpers.TestWorkspace;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -65,7 +66,7 @@ public class CucumberSteps {
 
     @And("the user waits a bit")
     public void userWaitsABit() throws InterruptedException {
-        Thread.sleep(3000);
+        Thread.sleep(Twitter4jFacade.SUBSCRIBE_DELAY + 3000);
     }
 
     @Then("the file {string} contains some tweets")
