@@ -15,7 +15,7 @@ public class Main {
         TwitterStreamFactory streamFactory = new TwitterStreamFactory();
         TwitterStream stream = streamFactory.getInstance();
         FileOutputStream outputStream = createFile(topicName + ".txt");
-        stream.addListener(new TopicListener(outputStream));
+        stream.addListener(new TopicListener(new TweetFormatter(), outputStream));
         stream.filter(new FilterQuery().language("en").track(topicName));
     }
 
@@ -36,15 +36,18 @@ public class Main {
     }
 
     private static class TopicListener extends StatusAdapter {
+        private final TweetFormatter formatter;
         private final PrintWriter writer;
 
-        private TopicListener(OutputStream stream) {
+        private TopicListener(TweetFormatter formatter, OutputStream stream) {
+            this.formatter = formatter;
             this.writer = new PrintWriter(stream);
         }
 
         @Override
         public void onStatus(Status status) {
-            writer.printf("%s: %s%n", status.getUser().getName(), status.getText());
+            String tweetText = formatter.format(status.getUser().getScreenName(), status.getText());
+            writer.println(tweetText);
             writer.flush();
         }
     }

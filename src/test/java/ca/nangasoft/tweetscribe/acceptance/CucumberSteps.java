@@ -75,9 +75,9 @@ public class CucumberSteps {
 
     @Then("the file {string} contains some tweets")
     public void fileContainsSomeTweets(String fileName) {
-        String tweetRegex = "^.+: .+$";
+        String tweetRegex = "^(@\\w+: .+|\\t.*)$";
 
-        assertThat(linesOf(getFile(fileName))).anyMatch(line -> line.matches(tweetRegex));
+        assertThat(linesOf(getFile(fileName))).allMatch(line -> line.matches(tweetRegex));
     }
 
     private Process startTweetScribe() throws IOException {
