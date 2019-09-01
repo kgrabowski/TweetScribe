@@ -44,6 +44,13 @@ public class CucumberSteps {
         }
     }
 
+    @After
+    public void terminateProgram() {
+        if (program.isAlive()) {
+            program.destroyForcibly();
+        }
+    }
+
     @When("the user starts the program")
     public void userStartsProgram() {
         try {
@@ -64,11 +71,6 @@ public class CucumberSteps {
     @And("the user waits a bit")
     public void userWaitsABit() throws InterruptedException {
         Thread.sleep(3000);
-    }
-
-    @And("the user exits the program")
-    public void userExitsProgram() {
-        program.destroy();
     }
 
     @Then("the file {string} contains some tweets")
