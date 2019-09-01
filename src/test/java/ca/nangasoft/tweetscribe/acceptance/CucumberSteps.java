@@ -10,7 +10,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,9 +61,15 @@ public class CucumberSteps {
 
     @When("the user chooses the topic {string}")
     public void userChoosesTopic(String topicName) {
-        OutputStream outputStream = program.getOutputStream();
-        PrintWriter writer = new PrintWriter(outputStream);
+        PrintWriter writer = new PrintWriter(program.getOutputStream());
         writer.println(topicName);
+        writer.flush();
+    }
+
+    @When("the user chooses topics:")
+    public void userChoosesTopics(List<String> topicNames) {
+        PrintWriter writer = new PrintWriter(program.getOutputStream());
+        writer.println(String.join(" ", topicNames));
         writer.flush();
     }
 
