@@ -1,8 +1,8 @@
 package ca.nangasoft.tweetscribe.test;
 
-import ca.nangasoft.tweetscribe.TopicPrompt;
-import ca.nangasoft.tweetscribe.TweetScribe;
-import ca.nangasoft.tweetscribe.TwitterFacade;
+import ca.nangasoft.tweetscribe.domain.TopicPrompt;
+import ca.nangasoft.tweetscribe.domain.TweetScribe;
+import ca.nangasoft.tweetscribe.domain.TwitterFacade;
 import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;

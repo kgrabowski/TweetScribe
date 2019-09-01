@@ -1,6 +1,6 @@
 package ca.nangasoft.tweetscribe.test;
 
-import ca.nangasoft.tweetscribe.TweetFormatter;
+import ca.nangasoft.tweetscribe.domain.TweetFormatter;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

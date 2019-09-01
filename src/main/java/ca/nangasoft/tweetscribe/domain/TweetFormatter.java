@@ -1,4 +1,4 @@
-package ca.nangasoft.tweetscribe;
+package ca.nangasoft.tweetscribe.domain;
 
 public class TweetFormatter {
     public String format(String screenName, String tweetText) {

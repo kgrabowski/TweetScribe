@@ -1,6 +1,6 @@
 package ca.nangasoft.tweetscribe.adapters;
 
-import ca.nangasoft.tweetscribe.TweetFormatter;
+import ca.nangasoft.tweetscribe.domain.TweetFormatter;
 import twitter4j.Status;
 import twitter4j.StatusAdapter;
 

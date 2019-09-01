@@ -1,6 +1,8 @@
 package ca.nangasoft.tweetscribe;
 
 import ca.nangasoft.tweetscribe.adapters.Twitter4jFacade;
+import ca.nangasoft.tweetscribe.domain.TopicPrompt;
+import ca.nangasoft.tweetscribe.domain.TweetScribe;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,7 +1,7 @@
 package ca.nangasoft.tweetscribe.adapters;
 
-import ca.nangasoft.tweetscribe.TweetFormatter;
-import ca.nangasoft.tweetscribe.TwitterFacade;
+import ca.nangasoft.tweetscribe.domain.TweetFormatter;
+import ca.nangasoft.tweetscribe.domain.TwitterFacade;
 import twitter4j.FilterQuery;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;

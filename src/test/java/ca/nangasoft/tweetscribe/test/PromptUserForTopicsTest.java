@@ -1,6 +1,6 @@
 package ca.nangasoft.tweetscribe.test;
 
-import ca.nangasoft.tweetscribe.TopicPrompt;
+import ca.nangasoft.tweetscribe.domain.TopicPrompt;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;

@@ -1,4 +1,4 @@
-package ca.nangasoft.tweetscribe;
+package ca.nangasoft.tweetscribe.domain;
 
 import java.util.List;
 
