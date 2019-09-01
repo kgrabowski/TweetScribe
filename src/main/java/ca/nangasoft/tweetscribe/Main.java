@@ -13,7 +13,7 @@ public class Main {
     private static TweetScribe createTweetScribe() {
         return new TweetScribe(
                 new Twitter4jFacade(),
-                new TopicPrompt(System.in, System.out)
-        );
+                new TopicPrompt(System.in, System.out),
+                topicName -> null);
     }
 }

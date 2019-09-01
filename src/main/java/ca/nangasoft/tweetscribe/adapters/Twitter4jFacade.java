@@ -1,5 +1,6 @@
 package ca.nangasoft.tweetscribe.adapters;
 
+import ca.nangasoft.tweetscribe.domain.TweetConsumer;
 import ca.nangasoft.tweetscribe.domain.TweetFormatter;
 import ca.nangasoft.tweetscribe.domain.TwitterFacade;
 import twitter4j.FilterQuery;
@@ -10,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 public class Twitter4jFacade implements TwitterFacade {
+    private final TwitterStreamFactory streamFactory = new TwitterStreamFactory();
+
     public static FileOutputStream createFile(String fileName) {
         try {
             return new FileOutputStream(fileName);
@@ -19,9 +22,8 @@ public class Twitter4jFacade implements TwitterFacade {
     }
 
     @Override
-    public void subscribeToStream(String topicName) {
+    public void subscribeToStream(String topicName, TweetConsumer consumer) {
         System.out.println("Starting Twitter stream for topic " + topicName);
-        TwitterStreamFactory streamFactory = new TwitterStreamFactory();
         TwitterStream stream = streamFactory.getInstance();
         FileOutputStream outputStream = Twitter4jFacade.createFile(topicName + ".txt");
         stream.addListener(new TopicListener(new TweetFormatter(), outputStream));

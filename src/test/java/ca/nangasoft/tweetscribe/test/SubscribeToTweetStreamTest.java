@@ -1,8 +1,6 @@
 package ca.nangasoft.tweetscribe.test;
 
-import ca.nangasoft.tweetscribe.domain.TopicPrompt;
-import ca.nangasoft.tweetscribe.domain.TweetScribe;
-import ca.nangasoft.tweetscribe.domain.TwitterFacade;
+import ca.nangasoft.tweetscribe.domain.*;
 import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
@@ -12,27 +10,38 @@ import static org.mockito.Mockito.*;
 class SubscribeToTweetStreamTest {
     private final TopicPrompt prompt = mock(TopicPrompt.class);
     private final TwitterFacade twitter = mock(TwitterFacade.class);
+    private final TweetConsumerFactory consumerFactory = mock(TweetConsumerFactory.class);
 
-    private final TweetScribe tweetScribe = new TweetScribe(twitter, prompt);
+    private final TweetScribe tweetScribe = new TweetScribe(twitter, prompt, consumerFactory);
 
     @Test
     void subscribeToSingleStream() {
+        TweetConsumer newsConsumer = mock(TweetConsumer.class, "newsConsumer");
+
         when(prompt.askUserForTopics()).thenReturn(asList("news"));
+        when(consumerFactory.newConsumer("news")).thenReturn(newsConsumer);
 
         tweetScribe.start();
 
-        verify(twitter).subscribeToStream("news");
+        verify(twitter).subscribeToStream("news", newsConsumer);
     }
 
     @Test
     void subscribeToMultipleStreams() {
+        TweetConsumer musicConsumer = mock(TweetConsumer.class, "musicConsumer");
+        TweetConsumer carsConsumer = mock(TweetConsumer.class, "carsConsumer");
+        TweetConsumer soccerConsumer = mock(TweetConsumer.class, "soccerConsumer");
+
         when(prompt.askUserForTopics()).thenReturn(asList("music", "cars", "soccer"));
+        when(consumerFactory.newConsumer("music")).thenReturn(musicConsumer);
+        when(consumerFactory.newConsumer("cars")).thenReturn(carsConsumer);
+        when(consumerFactory.newConsumer("soccer")).thenReturn(soccerConsumer);
 
         tweetScribe.start();
 
-        verify(twitter).subscribeToStream("music");
-        verify(twitter).subscribeToStream("cars");
-        verify(twitter).subscribeToStream("soccer");
+        verify(twitter).subscribeToStream("music", musicConsumer);
+        verify(twitter).subscribeToStream("cars", carsConsumer);
+        verify(twitter).subscribeToStream("soccer", soccerConsumer);
     }
 
     @Test
@@ -44,6 +53,6 @@ class SubscribeToTweetStreamTest {
 
         tweetScribe.start();
 
-        verify(twitter).subscribeToStream("gaming");
+        verify(twitter).subscribeToStream(eq("gaming"), any());
     }
 }
