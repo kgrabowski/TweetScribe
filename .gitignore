@@ -3,3 +3,6 @@ target/
 
 *.iml
 dependency-reduced-pom.xml
+
+# Make sure not to commit secrets to the repo
+twitter4j.properties
