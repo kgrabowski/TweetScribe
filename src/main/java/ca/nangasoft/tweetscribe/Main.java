@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,11 +27,9 @@ public class Main {
     }
 
     private static String promptForTopic() {
-        System.out.println("Enter a topic name: ");
-
-        try (Scanner scanner = new Scanner(System.in)) {
-            return scanner.next();
-        }
+        return new TopicPrompt(System.in, System.out)
+                .askUserForTopics()
+                .get(0);
     }
 
     private static class TopicListener extends StatusAdapter {
