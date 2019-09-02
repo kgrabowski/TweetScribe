@@ -14,6 +14,13 @@ class PromptUserForTopicsTest {
     private final OutputStream stdout = new ByteArrayOutputStream();
 
     @Test
+    void noTopics() {
+        TopicPrompt prompt = promptWithPredefinedInput("\n");
+        List<String> topics = prompt.askUserForTopics();
+        assertThat(topics).isEmpty();
+    }
+
+    @Test
     void enterSingleTopic() {
         TopicPrompt prompt = promptWithPredefinedInput("oscars");
         List<String> topics = prompt.askUserForTopics();

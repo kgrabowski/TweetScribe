@@ -24,6 +24,7 @@ public class TopicPrompt {
         writer.printf("Choose topics to subscribe to (up to %d):%n", MAX_TOPICS);
         String answer = scanner.nextLine();
         return Stream.of(answer.split("\\s"))
+                .filter(s -> !s.isEmpty())
                 .limit(MAX_TOPICS)
                 .collect(toList());
     }
