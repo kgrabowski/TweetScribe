@@ -9,8 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <name>TweetScribe</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <url>https://github.com/kgrabowski/TweetScribe</url>
     <description>A console Twitter client that streams tweets to text files</description>
 
     <properties>
