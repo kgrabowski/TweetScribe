@@ -37,7 +37,7 @@ text files.
    wasn't able to use more than two after a first day without being rate-limited.
    
    After waiting some time, you can kill the app with CTRL-C and look at the generated files. They will have
-   the same names as the selected topic names, with `.txt` extension, e.g. for _movies_ there will be a
+   the same names as the selected topic names plus a `.txt` extension. For example, for the topic _movies_ there will be a
    `movies.txt` file.
  
  
