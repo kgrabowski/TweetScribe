@@ -3,11 +3,15 @@ package ca.nangasoft.tweetscribe.domain;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 public class TopicPrompt {
+    private static final int MAX_TOPICS = 5;
+
     private final Scanner scanner;
     private final PrintWriter writer;
 
@@ -17,8 +21,10 @@ public class TopicPrompt {
     }
 
     public List<String> askUserForTopics() {
-        writer.println("Choose topics to subscribe to: ");
+        writer.printf("Choose topics to subscribe to (up to %d):%n", MAX_TOPICS);
         String answer = scanner.nextLine();
-        return Arrays.asList(answer.split(" "));
+        return Stream.of(answer.split("\\s"))
+                .limit(MAX_TOPICS)
+                .collect(toList());
     }
 }

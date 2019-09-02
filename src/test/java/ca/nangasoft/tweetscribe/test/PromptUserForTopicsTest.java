@@ -32,10 +32,17 @@ class PromptUserForTopicsTest {
     }
 
     @Test
+    void enterMoreTopicsThanAllowed() {
+        TopicPrompt prompt = promptWithPredefinedInput("dogs news programming hats basketball fish");
+        List<String> topics = prompt.askUserForTopics();
+        assertThat(topics).doesNotContain("fish");
+    }
+
+    @Test
     void promptsUserToProvideAnswer() {
         TopicPrompt prompt = promptWithPredefinedInput("irrelevant");
         prompt.askUserForTopics();
-        assertThat(stdout.toString()).startsWith("Choose topics to subscribe to:");
+        assertThat(stdout.toString()).startsWith("Choose topics to subscribe to (up to 5):");
     }
 
     private TopicPrompt promptWithPredefinedInput(String userInput) {
